@@ -77,4 +77,40 @@ curl -X POST http://localhost:3000/users/register \
     "email": "john.doe@example.com",
     "password": "securePassword123"
 }'
-```
+/**
+ * @api {post} /user/login User Login
+ * @apiName UserLogin
+ * @apiGroup User
+ * 
+ * @apiDescription This endpoint allows a user to log in by providing their credentials. 
+ * Upon successful authentication, a token is returned which can be used for subsequent requests.
+ * 
+ * @apiParam {String} username The username of the user.
+ * @apiParam {String} password The password of the user.
+ * 
+ * @apiSuccess {String} token The authentication token.
+ * @apiSuccess {String} message Success message.
+ * 
+ * @apiError {String} message Error message.
+ * @apiError {String} error Detailed error information.
+ * 
+ * @apiExample {json} Request-Example:
+ *     {
+ *       "username": "exampleUser",
+ *       "password": "examplePassword"
+ *     }
+ * 
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "token": "abcdef123456",
+ *       "message": "Login successful"
+ *     }
+ * 
+ * @apiErrorExample {json} Error-Response:
+ *     HTTP/1.1 401 Unauthorized
+ *     {
+ *       "message": "Invalid credentials",
+ *       "error": "Authentication failed"
+ *     }
+ */
