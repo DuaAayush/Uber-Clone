@@ -113,4 +113,63 @@ curl -X POST http://localhost:3000/users/register \
  *       "message": "Invalid credentials",
  *       "error": "Authentication failed"
  *     }
+## User Profile and Logout Endpoints
+
+### Get User Profile
+**Endpoint:** `GET /user/profile`
+
+Retrieves the profile information of the currently authenticated user.
+
+#### Authentication
+- Requires valid JWT token in the Authorization header
+
+#### Response
  */
+"""
+Logs out the current user by invalidating their session and redirecting them to the login page.
+
+This function performs the following steps:
+1. Invalidates the user's session to log them out.
+2. Redirects the user to the login page.
+
+Returns:
+    A redirect response to the login page.
+"""
+
+
+
+/**
+ * @module captainRoutes
+ * @description This module defines the routes for captain registration.
+ */
+
+const captainController = require('../controllers/captain.controller');
+const express = require('express');
+const router = express.Router();
+const { body } = require('express-validator');
+
+/**
+ * @route POST /register
+ * @description Register a new captain
+ * @access Public
+ * @param {string} email - The email of the captain. Must be a valid email.
+ * @param {string} fullname.firstname - The first name of the captain. Must be at least 3 characters.
+ * @param {string} password - The password of the captain. Must be at least 6 characters.
+ * @param {string} vehicle.color - The color of the captain's vehicle. Must be at least 3 characters.
+ * @param {string} vehicle.plate - The plate number of the captain's vehicle. Must be at least 3 characters.
+ * @param {number} vehicle.capacity - The capacity of the captain's vehicle. Must be at least 1.
+ * @param {string} vehicle.vehicleType - The type of the captain's vehicle. Must be one of ['car', 'motorcycle', 'Auto'].
+ * @returns {Object} 201 - Created captain object and authentication token
+ * @returns {Object} 400 - Validation errors or if captain already exists
+ */
+router.post('/register', [
+    body('email').isEmail().withMessage('Please enter a valid email'),
+    body('fullname.firstname').isLength({ min: 3 }).withMessage('First name must be at least 3 characters'),
+    body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
+    body('vehicle.color').isLength({ min: 3 }).withMessage('Color must be at least 3 characters'),
+    body('vehicle.plate').isLength({ min: 3 }).withMessage('Plate must be at least 3 characters'),
+    body('vehicle.capacity').isInt({ min: 1 }).withMessage('Capacity must be at least 1'),
+    body('vehicle.vehicleType').isIn(['car', 'motorcycle', 'Auto']).withMessage('Invalid vehicle type'),
+], captainController.registerCaptain);
+
+module.exports = router;
